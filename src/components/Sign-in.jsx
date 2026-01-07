@@ -59,7 +59,7 @@ function SignIn() {
               <label className="form-label">E-mail</label>
               <div className="input-with-icon">
                 <Mail size={18} className="input-icon" />
-                <input type="text" name="user_email" className="form-input" required />
+                <input type="text" name="user_email" className="form-input" placeholder='email' required />
               </div>
             </div>
 
@@ -67,7 +67,7 @@ function SignIn() {
               <label className="form-label">Senha</label>
               <div className="input-with-icon">
                 <Lock size={18} className="input-icon" />
-                <input type="password" name="user_password" className="form-input" required />
+                <input type="password" name="user_password" className="form-input" placeholder='senha' required />
               </div>
             </div>
 
@@ -76,6 +76,9 @@ function SignIn() {
               {isSubmitting ? "Entrando..." : "Entrar"}
             </button>
           </form>
+          <div className="signin-footer">
+            <p>Novo por aqui? <a href="/signup">Crie uma conta</a></p>
+          </div>
         </div>
       </div>
     </section>

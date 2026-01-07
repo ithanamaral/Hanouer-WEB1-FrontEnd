@@ -18,7 +18,7 @@ function SignUp() {
     const data = Object.fromEntries(formData.entries());
     
     try {
-      // Conexão real com o seu Back-end no Ryzen 5
+      // Conexão com o seu Back-end
       const response = await fetch("http://localhost:8000/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -35,11 +35,8 @@ function SignUp() {
       if (response.ok) {
         setMensagem({ tipo: 'sucesso', texto: "Conta criada com sucesso! Redirecionando..." });
         formRef.current.reset();
-        
-        // Espera 2 segundos para o usuário ler a mensagem e manda para o Login
         setTimeout(() => navigate('/'), 2000); 
       } else {
-        // Se o CPF ou Email já existir, o FastAPI manda o erro aqui
         const erroMsg = typeof result.detail === 'string' ? result.detail : "Erro ao cadastrar.";
         setMensagem({ tipo: 'erro', texto: erroMsg });
       }
@@ -56,8 +53,6 @@ function SignUp() {
         <div className="signup-form-wrapper">
           <h3 className="signup-form-title">Crie sua Conta</h3>
           <p className="signup-subtitle">Entre para a família Hanouer Petshop</p>
-
-          {/* Exibição de Mensagens de Erro ou Sucesso */}
           {mensagem.texto && (
             <p style={{ 
               color: mensagem.tipo === 'erro' ? '#ff4d4d' : '#2ecc71', 
@@ -144,7 +139,7 @@ function SignUp() {
           </form>
           
           <p className="login-link">
-            Já tem uma conta? <a href="/signin" onClick={(e) => { e.preventDefault(); navigate('/signin'); }}>Faça Sign In</a>
+            Já tem uma conta? <a href="/" >Faça Sign In</a>
           </p>
         </div>
       </div>
