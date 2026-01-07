@@ -1,26 +1,50 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LogIn, Mail, Lock } from 'lucide-react';
 import './Sign-in.css';
 
 function SignIn() {
   const formRef = useRef();
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [erro, setErro] = useState('');
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErro('');
 
-    // Captura dos dados
     const formData = new FormData(formRef.current);
     const data = Object.fromEntries(formData.entries());
-    
-    console.log("Tentativa de Login:", data);
 
-    // Simulação de autenticação
-    setTimeout(() => {
-      alert("Bem-vindo de volta ao Hanouer Petshop!");
+    try {
+      const response = await fetch("http://localhost:8000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.user_email, // Pega do input name="user_email"
+          password: data.user_password // Mapeia para o 'senha' do Python
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("Navegando para Home...");
+        navigate('/home');
+      } else {
+        // Evita erro de "Object as child" pegando apenas a string do erro
+        let msg = "Falha no login.";
+        if (result.detail) {
+          msg = typeof result.detail === 'string' ? result.detail : result.detail[0].msg;
+        }
+        setErro(msg);
+      }
+    } catch (error) {
+      setErro("Servidor fora do ar.");
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -28,55 +52,30 @@ function SignIn() {
       <div className="signin-container">
         <div className="signin-form-wrapper">
           <h3 className="signin-form-title">Acessar Conta</h3>
-          <p className="signin-subtitle">Que bom ver você novamente!</p>
+          {erro && <p style={{ color: 'red', textAlign: 'center' }}>{erro}</p>}
 
           <form className="signin-form" ref={formRef} onSubmit={handleSignIn}>
-            
-            {/* Campo Email */}
             <div className="form-group">
-              <label htmlFor="email" className="form-label">E-mail</label>
+              <label className="form-label">E-mail</label>
               <div className="input-with-icon">
                 <Mail size={18} className="input-icon" />
-                <input
-                  type="email"
-                  id="email"
-                  name="user_email"
-                  className="form-input"
-                  placeholder="seu@email.com"
-                  required
-                />
+                <input type="text" name="user_email" className="form-input" required />
               </div>
             </div>
 
-            {/* Campo Senha */}
             <div className="form-group">
-              <label htmlFor="password" className="form-label">Senha</label>
+              <label className="form-label">Senha</label>
               <div className="input-with-icon">
                 <Lock size={18} className="input-icon" />
-                <input
-                  type="password"
-                  id="password"
-                  name="user_password"
-                  className="form-input"
-                  placeholder="Sua senha secreta"
-                  required
-                />
+                <input type="password" name="user_password" className="form-input" required />
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn-signin"
-            >
+            <button type="submit" disabled={isSubmitting} className="btn-signin">
               <LogIn size={18} />
               {isSubmitting ? "Entrando..." : "Entrar"}
             </button>
           </form>
-
-          <div className="signin-footer">
-            <p>Novo por aqui? <a href="/signup">Crie uma conta</a></p>
-          </div>
         </div>
       </div>
     </section>

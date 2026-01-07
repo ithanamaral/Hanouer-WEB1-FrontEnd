@@ -23,7 +23,9 @@ function App() {
         {/* Esta div é a chave para o conteúdo aparecer! */}
         <div className="main-content"> 
           <Routes>
-            <Route path="/" element={
+            <Route path="/" element={<SingIn />} />
+            <Route path="/signup" element={<SingUp />} />
+            <Route path="/home" element={
               <>
                 <Hero />
                 <About />
@@ -34,8 +36,6 @@ function App() {
             <Route path="/busca" element={<Busca />} />
             <Route path="/produtos" element={<Products />} />
             <Route path="/servicos" element={<Services />} />
-            <Route path="/signin" element={<SingIn />} />
-            <Route path="/signup" element={<SingUp />} />
           </Routes>
         </div>
 
