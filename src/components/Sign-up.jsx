@@ -18,7 +18,7 @@ function SignUp() {
     const data = Object.fromEntries(formData.entries());
     
     try {
-      // Conexão com o seu Back-end
+      // Conexão com Back-end
       const response = await fetch("http://localhost:8000/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -90,14 +90,14 @@ function SignUp() {
                   id="email"
                   name="user_email"
                   className="form-input"
-                  placeholder="seu@email.com"
+                  placeholder="email"
                   required
                 />
               </div>
             </div>
 
-            <div className="form-row" style={{ display: 'flex', gap: '10px' }}>
-              <div className="form-group" style={{ flex: 1 }}>
+            <div className="form-row">
+              <div className="form-group">
                 <label htmlFor="password" className="form-label">Senha</label>
                 <div className="input-with-icon">
                   <Lock size={18} className="input-icon" />
@@ -106,13 +106,13 @@ function SignUp() {
                     id="password"
                     name="user_password"
                     className="form-input"
-                    placeholder="******"
+                    placeholder="senha"
                     required
                   />
                 </div>
               </div>
 
-              <div className="form-group" style={{ flex: 1 }}>
+              <div className="form-group">
                 <label htmlFor="cpf" className="form-label">CPF</label>
                 <div className="input-with-icon">
                   <CreditCard size={18} className="input-icon" />
